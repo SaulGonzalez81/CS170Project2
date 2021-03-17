@@ -59,6 +59,7 @@ def search_feature_function(data):
     best_set_of_features = set()
     best_accuracy = 0
 
+    #Search through our dataset while testing the features to find the best accuracy
     for i in range(data.shape[1]):
         print('On the ', str(i), ' level of the search tree')
         best_accuracy_so_far = 0
@@ -72,14 +73,22 @@ def search_feature_function(data):
                     best_accuracy_so_far = accuracy
                     feature_to_add_at_this_level = k
                     print("Change in accuracy, new accuracy: ",accuracy,"\n")
+        
+        #Add the best feature for this level to our set of current features
         current_set_of_features.add(feature_to_add_at_this_level)
+
+        #Update the best_accuracy that we have seen and update the set of features that produce this result
         if best_accuracy_so_far > best_accuracy:
             best_set_of_features = copy.deepcopy(current_set_of_features)
             best_accuracy = best_accuracy_so_far
+        
+        #Print out the feature that was added at this level if there was a feature added. feature 0 is not allowed.
         if feature_to_add_at_this_level != 0:
             print('On this level ', str(i), ', feature ',str(feature_to_add_at_this_level), ' was added.')
         else:
             print('On this level ', str(i), ', no feature was added.')
+
+    #Print out the set that produces the best accuracy 
     print('Final Best Accuracy: ', best_accuracy)
     print('Final Best Set: ', best_set_of_features)  
 
@@ -92,7 +101,7 @@ def backwards_elimination_search(data):
     best_set_of_features = {i for i in range(1,data.shape[1])}
     best_accuracy = 0
 
-
+    #Search through our dataset while testing the features to find the best accuracy
     for i in range(data.shape[1]):
         print('On the ', str(10-i), ' level of the search tree')
         best_accuracy_so_far = 0
@@ -108,6 +117,8 @@ def backwards_elimination_search(data):
                     best_accuracy_so_far = accuracy
                     feature_to_eliminate_at_this_level = k
                     print("Change in accuracy, new accuracy: ",accuracy,"\n")
+
+        #Determine which feature to delete at the current level and determine if that set produces the best accuracy so far. If so, then we save the accuracy & the set
         if feature_to_eliminate_at_this_level != 0:            
             current_set_of_features.remove(feature_to_eliminate_at_this_level)
             if best_accuracy_so_far > best_accuracy:
@@ -116,6 +127,8 @@ def backwards_elimination_search(data):
             print('On this level ', str(10-i), ', feature ',str(feature_to_eliminate_at_this_level), ' was eliminated.')
         else:
             print('On this level ', str(10-i), ', no feature was eliminated.')
+
+    #Print out the set that produces the best accuracy 
     print('Final Best Accuracy: ', best_accuracy)
     print('Final Best Set: ', best_set_of_features)    
 
